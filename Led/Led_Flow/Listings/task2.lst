@@ -1,0 +1,51 @@
+A51 MACRO ASSEMBLER  TASK2                                                                04/10/2024 12:24:41 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\task2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE task2.asm SET(SMALL) DEBUG PRINT(.\Listings\task2.lst) OBJECT(.\Objects
+                      \task2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+                       2             
+0000 747F              3             MOV A, #7FH ; 01111111 in Binary
+0002 F5A0              4             MOV P2, A
+                       5             
+0004 23                6             START:  RL A
+0005 F5A0              7                             MOV P2, A
+0007 110B              8                             ACALL DELAY
+                       9             
+0009 80F9             10             SJMP START
+                      11     
+000B                  12             DELAY:  ; 500ms delay
+000B 7905             13                             MOV R1, #5
+000D 7AB4             14             HERE1:  MOV R2, #180 
+000F 7BFF             15             HERE2:  MOV R3, #255
+0011 DBFE             16             HERE3:  DJNZ R3, HERE3
+0013 DAFA             17                             DJNZ R2, HERE2
+0015 D9F6             18                             DJNZ R1, HERE1
+0017 22               19             RET
+                      20             
+                      21     END
+A51 MACRO ASSEMBLER  TASK2                                                                04/10/2024 12:24:41 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DELAY. . . . . . .  C ADDR   000BH   A   
+HERE1. . . . . . .  C ADDR   000DH   A   
+HERE2. . . . . . .  C ADDR   000FH   A   
+HERE3. . . . . . .  C ADDR   0011H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+START. . . . . . .  C ADDR   0004H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

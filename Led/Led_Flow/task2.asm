@@ -1,0 +1,21 @@
+ORG 0000H
+	
+	MOV A, #7FH ; 01111111 in Binary
+	MOV P2, A
+	
+	START:	RL A
+			MOV P2, A
+			ACALL DELAY
+	
+	SJMP START
+
+	DELAY: 	; 500ms delay
+			MOV R1, #5
+	HERE1:	MOV R2, #180 
+	HERE2:	MOV R3, #255
+	HERE3: 	DJNZ R3, HERE3
+			DJNZ R2, HERE2
+			DJNZ R1, HERE1
+	RET
+	
+END

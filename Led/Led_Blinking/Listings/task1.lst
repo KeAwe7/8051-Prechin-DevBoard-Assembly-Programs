@@ -1,0 +1,50 @@
+A51 MACRO ASSEMBLER  TASK1                                                                04/10/2024 11:20:56 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\task1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE task1.asm SET(SMALL) DEBUG PRINT(.\Listings\task1.lst) OBJECT(.\Objects
+                      \task1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H
+                       2             
+0000 D3                3             START:  SETB C
+0001 92A0              4             AGAIN:  MOV P2.0, C
+                       5             
+0003 1108              6             ACALL DELAY
+0005 B3                7             CPL C
+0006 80F9              8             SJMP AGAIN
+                       9             
+0008 7905             10             DELAY:  MOV R1, #5      ; 500ms delay
+000A 7AB4             11             HERE1:  MOV R2, #180 
+000C 7BFF             12             HERE2:  MOV R3, #255
+000E DBFE             13             HERE3:  DJNZ R3, HERE3
+0010 DAFA             14                             DJNZ R2, HERE2
+0012 D9F6             15                             DJNZ R1, HERE1
+0014 22               16             RET
+                      17             
+                      18     END
+                                     
+A51 MACRO ASSEMBLER  TASK1                                                                04/10/2024 11:20:56 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+AGAIN. . . . . . .  C ADDR   0001H   A   
+DELAY. . . . . . .  C ADDR   0008H   A   
+HERE1. . . . . . .  C ADDR   000AH   A   
+HERE2. . . . . . .  C ADDR   000CH   A   
+HERE3. . . . . . .  C ADDR   000EH   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+START. . . . . . .  C ADDR   0000H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

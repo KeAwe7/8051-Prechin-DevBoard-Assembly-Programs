@@ -1,0 +1,58 @@
+BL51 BANKED LINKER/LOCATER V6.22.4.0                                                    04/10/2024  12:24:41  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.4.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\task2.obj TO .\Objects\task2 PRINT (.\Listings\task2.m51) RAMSIZE (256)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\task2.obj (TASK2)
+
+
+LINK MAP OF MODULE:  .\Objects\task2 (TASK2)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0018H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\task2 (TASK2)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        TASK2
+  C:000BH         SYMBOL        DELAY
+  C:000DH         SYMBOL        HERE1
+  C:000FH         SYMBOL        HERE2
+  C:0011H         SYMBOL        HERE3
+  D:00A0H         SYMBOL        P2
+  C:0004H         SYMBOL        START
+  C:0000H         LINE#         3
+  C:0002H         LINE#         4
+  C:0004H         LINE#         6
+  C:0005H         LINE#         7
+  C:0007H         LINE#         8
+  C:0009H         LINE#         10
+  C:000BH         LINE#         13
+  C:000DH         LINE#         14
+  C:000FH         LINE#         15
+  C:0011H         LINE#         16
+  C:0013H         LINE#         17
+  C:0015H         LINE#         18
+  C:0017H         LINE#         19
+  -------         ENDMOD        TASK2
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0018H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=24
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
