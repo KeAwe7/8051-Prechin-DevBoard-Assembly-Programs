@@ -1,0 +1,133 @@
+A51 MACRO ASSEMBLER  TEST02                                                               04/23/2024 20:44:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\test02.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE test02.asm SET(SMALL) DEBUG PRINT(.\Listings\test02.lst) OBJECT(.\Objec
+                      ts\test02.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00B6                 1     SRCLK EQU P3.6
+  00B5                 2     RCLK EQU P3.5
+  00B4                 3     SER EQU P3.4
+  0080                 4     LED EQU P0
+  REG                  5     DAT1 EQU R6
+                       6             
+0000 75807F            7     MOV LED, #7FH
+0003 90004B            8     MOV DPTR, #4BH
+0006                   9     MAIN_LOOP:
+                      10     
+0006 7800             11             MOV R0, #0
+0008 7908             12             MOV R1, #8
+                      13             
+000A                  14             LOOP0:
+                      15             
+000A E9               16             MOV A, R1
+000B 93               17             MOVC A, @A+DPTR
+000C F580             18             MOV LED, A
+000E 09               19             INC R1
+000F B91002           20             CJNE R1, #16, CONTINUE1
+0012 8013             21             JMP END_LOOP
+0014                  22             CONTINUE1:      ; Otherwise continue
+                      23     
+0014 E8               24             MOV A, R0
+0015 93               25             MOVC A, @A+DPTR
+0016 FE               26             MOV DAT1, A
+0017 1129             27             ACALL SEND_BYTE
+0019 08               28             INC R0
+001A B80902           29             CJNE R0, #9, CONTINUE2
+001D 8008             30             JMP END_LOOP
+001F                  31             CONTINUE2:      ; Otherwise continue    
+                      32             
+001F 1142             33             ACALL DELAY
+0021 7E00             34             MOV DAT1, #00H
+0023 1129             35             ACALL SEND_BYTE
+                      36             
+0025 80E3             37             JMP LOOP0
+                      38             
+0027                  39     END_LOOP:
+0027 80DD             40     JMP MAIN_LOOP
+                      41     
+                      42     
+0029                  43     SEND_BYTE:
+                      44     
+0029 C2B6             45             CLR SRCLK
+002B C2B5             46             CLR RCLK
+                      47     
+002D EE               48             MOV A, DAT1
+002E 7D08             49             MOV R5, #8              ; Loop counter
+0030                  50             LOOP1:
+0030 33               51                     RLC A
+0031 92B4             52                     MOV SER, C
+0033 D2B6             53                     SETB SRCLK
+0035 00               54                     NOP
+0036 00               55                     NOP
+0037 C2B6             56                     CLR SRCLK
+0039 DDF5             57             DJNZ R5, LOOP1
+A51 MACRO ASSEMBLER  TEST02                                                               04/23/2024 20:44:58 PAGE     2
+
+                      58     
+003B D2B5             59                     SETB RCLK
+003D 00               60                     NOP
+003E 00               61                     NOP
+003F C2B5             62                     CLR RCLK
+                      63     
+0041 22               64     RET             ; SEND_BYTE RETURN
+                      65             
+0042                  66     DELAY:  
+                      67     
+0042 7B04             68             HERE1:  MOV R3, #4
+0044 7CFF             69             HERE2:  MOV R4, #255
+0046 DCFE             70             HERE3:  DJNZ R4, HERE3
+0048 DBFA             71                             DJNZ R3, HERE2
+                      72     
+                      73                     
+004A 22               74     RET             ; DELAY RET
+                      75     
+004B 00003E41         76             DB 00H, 00H, 3EH, 41H, 41H, 41H, 3EH, 00H,       7FH, 0BFH, 0DFH, 0EFH, 0F7H, 0FBH,
+                              0FDH, 0FEH  ; Display 0
+004F 41413E00                
+0053 7FBFDFEF                
+0057 F7FBFDFE                
+                      77             ;DB 9EH, 90H, 90H, 0FEH, 12H, 12H, 0F2H, 00H,    7FH, 0BFH, 0DFH, 0EFH, 0F7H, 0FBH,
+                              0FDH, 0FEH ; Display funny german sign
+                      78             ;0        1    2    3    4    5    6    7   |  8     9    10    11    12    13    1
+                             4    15
+                      79             ; For the SEND_BYTE (Array position)    |  For the LED
+                      80     
+                      81     END
+                                     
+                             
+A51 MACRO ASSEMBLER  TEST02                                                               04/23/2024 20:44:58 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CONTINUE1. . . . .  C ADDR   0014H   A   
+CONTINUE2. . . . .  C ADDR   001FH   A   
+DAT1 . . . . . . .    REG    R6          
+DELAY. . . . . . .  C ADDR   0042H   A   
+END_LOOP . . . . .  C ADDR   0027H   A   
+HERE1. . . . . . .  C ADDR   0042H   A   
+HERE2. . . . . . .  C ADDR   0044H   A   
+HERE3. . . . . . .  C ADDR   0046H   A   
+LED. . . . . . . .  D ADDR   0080H   A   
+LOOP0. . . . . . .  C ADDR   000AH   A   
+LOOP1. . . . . . .  C ADDR   0030H   A   
+MAIN_LOOP. . . . .  C ADDR   0006H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RCLK . . . . . . .  B ADDR   00B0H.5 A   
+SEND_BYTE. . . . .  C ADDR   0029H   A   
+SER. . . . . . . .  B ADDR   00B0H.4 A   
+SRCLK. . . . . . .  B ADDR   00B0H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

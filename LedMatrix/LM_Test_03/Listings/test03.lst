@@ -1,0 +1,203 @@
+A51 MACRO ASSEMBLER  TEST03                                                               04/23/2024 22:09:19 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\test03.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE test03.asm SET(SMALL) DEBUG PRINT(.\Listings\test03.lst) OBJECT(.\Objec
+                      ts\test03.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00B6                 1     SRCLK EQU P3.6
+  00B5                 2     RCLK EQU P3.5
+  00B4                 3     SER EQU P3.4
+  0080                 4     LED EQU P0
+  REG                  5     DAT1 EQU R6
+                       6             
+0000 75807F            7     MOV LED, #7FH
+                       8     
+0003                   9     MAIN_LOOP:
+                      10     
+0003 7F20             11     MOV R7, #20H
+                      12     
+0005                  13     K:
+0005 900095           14     MOV DPTR, #95H
+0008 7920             15     MOV R1, #20H
+000A 1146             16     ACALL MOVER
+000C 117F             17     ACALL DELAY
+000E DFF5             18     DJNZ R7, K
+                      19     
+0010 7F20             20     MOV R7, #20H
+                      21     
+0012                  22     E1:
+0012 90009D           23     MOV DPTR, #9DH
+0015 7918             24     MOV R1, #18H
+0017 1146             25     ACALL MOVER
+0019 117F             26     ACALL DELAY
+001B DFF5             27     DJNZ R7, E1
+                      28     
+001D 7F20             29     MOV R7, #20H
+                      30      
+001F                  31     A1:
+001F 9000A5           32     MOV DPTR, #0A5H
+0022 7910             33     MOV R1, #10H
+0024 1146             34     ACALL MOVER
+0026 117F             35     ACALL DELAY
+0028 DFF5             36     DJNZ R7, A1
+                      37     
+002A 7F20             38     MOV R7, #20H
+                      39      
+002C                  40     N:
+002C 9000AD           41     MOV DPTR, #0ADH
+002F 7908             42     MOV R1, #8H
+0031 1146             43     ACALL MOVER
+0033 117F             44     ACALL DELAY
+0035 DFF5             45     DJNZ R7, N
+                      46     
+0037 7F20             47     MOV R7, #20H
+                      48     
+0039                  49     E2:
+0039 90009D           50     MOV DPTR, #9DH
+003C 7918             51     MOV R1, #18H
+003E 1146             52     ACALL MOVER
+0040 117F             53     ACALL DELAY
+0042 DFF5             54     DJNZ R7, E2
+                      55     
+0044 80BD             56     JMP MAIN_LOOP
+                      57     
+A51 MACRO ASSEMBLER  TEST03                                                               04/23/2024 22:09:19 PAGE     2
+
+0046                  58     MOVER:
+                      59     
+0046 7800             60             MOV R0, #0
+                      61             
+0048                  62             LOOP0:
+                      63             
+0048 E9               64             MOV A, R1
+0049 93               65             MOVC A, @A+DPTR
+004A F580             66             MOV LED, A
+004C 09               67             INC R1
+004D B91002           68             CJNE R1, #16, CONTINUE1
+0050 8013             69             JMP END_LOOP
+0052                  70             CONTINUE1:      ; Otherwise continue
+                      71     
+0052 E8               72             MOV A, R0
+0053 93               73             MOVC A, @A+DPTR
+0054 FE               74             MOV DAT1, A
+0055 1166             75             ACALL SEND_BYTE
+0057 08               76             INC R0
+0058 B80902           77             CJNE R0, #9, CONTINUE2
+005B 8008             78             JMP END_LOOP
+005D                  79             CONTINUE2:      ; Otherwise continue    
+                      80             
+005D 117F             81             ACALL DELAY
+005F 7E00             82             MOV DAT1, #00H
+0061 1166             83             ACALL SEND_BYTE
+                      84             
+0063 80E3             85             JMP LOOP0
+                      86             
+0065                  87     END_LOOP:
+0065 22               88     RET                             ; MOVER RETURN
+                      89     
+0066                  90     SEND_BYTE:
+                      91     
+0066 C2B6             92             CLR SRCLK
+0068 C2B5             93             CLR RCLK
+                      94     
+006A EE               95             MOV A, DAT1
+006B 7D08             96             MOV R5, #8              ; Loop counter
+006D                  97             LOOP1:
+006D 33               98                     RLC A
+006E 92B4             99                     MOV SER, C
+0070 D2B6            100                     SETB SRCLK
+0072 00              101                     NOP
+0073 00              102                     NOP
+0074 C2B6            103                     CLR SRCLK
+0076 DDF5            104             DJNZ R5, LOOP1
+                     105     
+0078 D2B5            106                     SETB RCLK
+007A 00              107                     NOP
+007B 00              108                     NOP
+007C C2B5            109                     CLR RCLK
+                     110     
+007E 22              111     RET             ; SEND_BYTE RETURN
+                     112             
+007F                 113     DELAY:  
+                     114     
+007F 7B04            115             HERE1:  MOV R3, #4
+0081 7CFF            116             HERE2:  MOV R4, #255
+0083 DCFE            117             HERE3:  DJNZ R4, HERE3
+0085 DBFA            118                             DJNZ R3, HERE2
+                     119                     
+0087 22              120     RET             ; DELAY RET
+                     121     
+0088                 122     DELAY1:
+                     123     
+A51 MACRO ASSEMBLER  TEST03                                                               04/23/2024 22:09:19 PAGE     3
+
+0088 7904            124                     MOV R1, #4
+008A 7BFF            125     HERE4:  MOV R3, #255
+008C 7CFF            126     HERE5:  MOV R4, #255
+008E DCFE            127     HERE6:  DJNZ R4, HERE6
+0090 DBFA            128                     DJNZ R3, HERE5
+0092 D9F6            129                     DJNZ R1, HERE4
+                     130                     
+0094 22              131     RET             ; DELAY 1 RET
+                     132     
+0095 00FF1824        133             DB 00H, 0FFH, 18H, 24H, 42H, 81H, 00H, 00H ; Display K 4B
+0099 42810000                
+009D 00FF9191        134             DB 00H, 0FFH, 91H, 91H, 91H, 91H, 91H, 00H      ; Display E     53
+00A1 91919100                
+00A5 007F9090        135             DB 00H, 7FH, 90H, 90H, 90H, 90H, 7FH, 00H       ; Display A     5B
+00A9 90907F00                
+00AD 00FF4030        136             DB 00H, 0FFH, 40H, 30H, 0CH, 02H, 0FFH, 00H     ; Display N 63
+00B1 0C02FF00                
+                     137                     
+00B5 7FBFDFEF        138             DB 7FH, 0BFH, 0DFH, 0EFH, 0F7H, 0FBH, 0FDH, 0FEH ; Led selector 6B
+00B9 F7FBFDFE                
+                     139     
+                     140     END
+                                     
+                             
+A51 MACRO ASSEMBLER  TEST03                                                               04/23/2024 22:09:19 PAGE     4
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+A1 . . . . . . . .  C ADDR   001FH   A   
+CONTINUE1. . . . .  C ADDR   0052H   A   
+CONTINUE2. . . . .  C ADDR   005DH   A   
+DAT1 . . . . . . .    REG    R6          
+DELAY. . . . . . .  C ADDR   007FH   A   
+DELAY1 . . . . . .  C ADDR   0088H   A   
+E1 . . . . . . . .  C ADDR   0012H   A   
+E2 . . . . . . . .  C ADDR   0039H   A   
+END_LOOP . . . . .  C ADDR   0065H   A   
+HERE1. . . . . . .  C ADDR   007FH   A   
+HERE2. . . . . . .  C ADDR   0081H   A   
+HERE3. . . . . . .  C ADDR   0083H   A   
+HERE4. . . . . . .  C ADDR   008AH   A   
+HERE5. . . . . . .  C ADDR   008CH   A   
+HERE6. . . . . . .  C ADDR   008EH   A   
+K. . . . . . . . .  C ADDR   0005H   A   
+LED. . . . . . . .  D ADDR   0080H   A   
+LOOP0. . . . . . .  C ADDR   0048H   A   
+LOOP1. . . . . . .  C ADDR   006DH   A   
+MAIN_LOOP. . . . .  C ADDR   0003H   A   
+MOVER. . . . . . .  C ADDR   0046H   A   
+N. . . . . . . . .  C ADDR   002CH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RCLK . . . . . . .  B ADDR   00B0H.5 A   
+SEND_BYTE. . . . .  C ADDR   0066H   A   
+SER. . . . . . . .  B ADDR   00B0H.4 A   
+SRCLK. . . . . . .  B ADDR   00B0H.6 A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

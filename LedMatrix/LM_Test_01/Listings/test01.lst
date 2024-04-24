@@ -1,0 +1,118 @@
+A51 MACRO ASSEMBLER  TEST01                                                               04/23/2024 19:03:04 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\test01.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE test01.asm SET(SMALL) DEBUG PRINT(.\Listings\test01.lst) OBJECT(.\Objec
+                      ts\test01.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  00B6                 1     SRCLK EQU P3.6
+  00B5                 2     RCLK EQU P3.5
+  00B4                 3     SER EQU P3.4
+  0087                 4     LED EQU P0.7
+  REG                  5     DAT1 EQU R6
+  REG                  6     DAT2 EQU R7
+                       7             
+                       8     ;MOV DAT1, #0DDH
+                       9     ;MOV DAT2, #22H
+                      10     
+0000                  11     TEST_LOOP:
+                      12                                             ; These values choose which row to light up
+0000 7E00             13     MOV DAT1, #00H          ; 0000 0000                                     0000 0000
+0002 7FFF             14     MOV DAT2, #0FFH         ; 1111 1111 -> ABCD EFGH        1111 1110 -> ABCD EFG_ (H is off)
+                      15     
+0004 C287             16     CLR LED
+0006 D286             17     SETB P0.6
+0008 1116             18     ACALL SEND_BYTE
+000A 113D             19     ACALL DELAY
+                      20     
+000C D287             21     SETB LED
+000E C286             22     CLR P0.6
+0010 1116             23     ACALL SEND_BYTE
+0012 113D             24     ACALL DELAY
+                      25     
+0014 80EA             26     JMP TEST_LOOP
+                      27     
+0016                  28     SEND_BYTE:
+                      29     
+0016 D2B6             30     SETB SRCLK
+0018 D2B5             31     SETB RCLK
+                      32     
+001A EE               33     MOV A, DAT1             ; A = FE
+001B 7808             34     MOV R0, #8              ; Loop counter
+001D                  35     LOOP1:
+                      36     
+001D 33               37     RLC A
+001E 92B4             38     MOV SER, C
+                      39     
+0020 C2B6             40     CLR SRCLK
+0022 00               41     NOP
+0023 00               42     NOP
+0024 D2B6             43     SETB SRCLK
+0026 D8F5             44     DJNZ R0, LOOP1
+                      45     
+0028 7808             46     MOV R0, #8              ; Loop counter
+002A EF               47     MOV A, DAT2             ; A = 01
+                      48     
+002B                  49     LOOP2:
+002B 33               50     RLC A
+002C 92B4             51     MOV SER, C
+                      52     
+002E C2B6             53     CLR SRCLK
+0030 00               54     NOP
+0031 00               55     NOP
+0032 D2B6             56     SETB SRCLK
+0034 D8F5             57     DJNZ R0, LOOP2
+A51 MACRO ASSEMBLER  TEST01                                                               04/23/2024 19:03:04 PAGE     2
+
+                      58     
+0036 C2B5             59     CLR RCLK
+0038 00               60     NOP
+0039 00               61     NOP
+003A D2B5             62     SETB RCLK
+                      63     
+003C 22               64     RET             ; SEND_BYTE RET
+                      65     
+003D                  66     DELAY:
+003D 7909             67                     MOV R1, #9
+003F 7AFF             68     HERE1:  MOV R2, #255
+0041 7BFF             69     HERE2:  MOV R3, #255
+0043 DBFE             70     HERE3:  DJNZ R3, HERE3
+0045 DAFA             71                     DJNZ R2, HERE2
+0047 D9F6             72                     DJNZ R1, HERE1
+                      73                     
+0049 22               74     RET             ; DELAY RET
+                      75     
+                      76     END
+A51 MACRO ASSEMBLER  TEST01                                                               04/23/2024 19:03:04 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DAT1 . . . . . . .    REG    R6          
+DAT2 . . . . . . .    REG    R7          
+DELAY. . . . . . .  C ADDR   003DH   A   
+HERE1. . . . . . .  C ADDR   003FH   A   
+HERE2. . . . . . .  C ADDR   0041H   A   
+HERE3. . . . . . .  C ADDR   0043H   A   
+LED. . . . . . . .  B ADDR   0080H.7 A   
+LOOP1. . . . . . .  C ADDR   001DH   A   
+LOOP2. . . . . . .  C ADDR   002BH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+RCLK . . . . . . .  B ADDR   00B0H.5 A   
+SEND_BYTE. . . . .  C ADDR   0016H   A   
+SER. . . . . . . .  B ADDR   00B0H.4 A   
+SRCLK. . . . . . .  B ADDR   00B0H.6 A   
+TEST_LOOP. . . . .  C ADDR   0000H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
